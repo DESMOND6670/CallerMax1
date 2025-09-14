@@ -37,11 +37,15 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-gradle-
           
-    - name: Make gradlew executable
-      run: chmod +x gradlew
-      
+    - name: Install Gradle
+      run: |
+        wget https://services.gradle.org/distributions/gradle-8.0-bin.zip
+        unzip gradle-8.0-bin.zip
+        echo "GRADLE_HOME=$PWD/gradle-8.0" >> $GITHUB_ENV
+        echo "$PWD/gradle-8.0/bin" >> $GITHUB_PATH
+        
     - name: Build Debug APK
-      run: ./gradlew assembleDebug --stacktrace
+      run: gradle assembleDebug --stacktrace
       
     - name: Upload Debug APK
       uses: actions/upload-artifact@v4
