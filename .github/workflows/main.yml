@@ -24,8 +24,8 @@ jobs:
     - name: Setup Android SDK
       uses: android-actions/setup-android@v2
       with:
-        api-level: 34
-        build-tools: 34.0.0
+        api-level: 33
+        build-tools: 33.0.1
         
     - name: Cache Gradle packages
       uses: actions/cache@v3
@@ -46,6 +46,12 @@ jobs:
         
     - name: Build Debug APK
       run: gradle assembleDebug --stacktrace
+      
+    - name: Verify APK
+      run: |
+        ls -la app/build/outputs/apk/debug/
+        file app/build/outputs/apk/debug/app-debug.apk
+        aapt dump badging app/build/outputs/apk/debug/app-debug.apk
       
     - name: Upload Debug APK
       uses: actions/upload-artifact@v4
